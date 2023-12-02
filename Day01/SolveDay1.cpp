@@ -1,7 +1,6 @@
 #include <iostream>
 #include "SolveDay1.h"
 #include <string>
-#include <regex>
 
 std::vector<std::string> SolveDay1::replacements = {"one", "two", "three", "four", "five", "six", "seven", "eight",
                                                     "nine"};
@@ -17,17 +16,17 @@ void SolveDay1::solve(const std::vector<std::string> &input) {
 
 
 std::string SolveDay1::preProcessLine(const std::string &line) {
-    std::string tmp = " ";
+    std::string start = " ";
     for (char i: line) {
         if (i >= '0' && i <= '9') {
-            tmp[0] = i;
+            start[0] = i;
             break; //found digit before word
         }
-        tmp.push_back(i);
+        start.push_back(i);
         int found = 0;
         for (int j = 0; j < replacements.size(); j++) {
-            if (tmp.find(replacements[j]) != std::string::npos) {
-                tmp[0] = std::to_string(j + 1)[0];
+            if (start.find(replacements[j]) != std::string::npos) {
+                start[0] = std::to_string(j + 1)[0];
                 found = 1;
                 break; //found a word before digit
             }
@@ -54,7 +53,7 @@ std::string SolveDay1::preProcessLine(const std::string &line) {
             break;
     }
     std::string res = "aa";
-    res[0] = tmp[0];
+    res[0] = start[0];
     res[1] = end[0];
     return res;
 }

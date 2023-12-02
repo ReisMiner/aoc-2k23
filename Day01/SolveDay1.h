@@ -6,7 +6,6 @@
 class SolveDay1 {
 public:
     static void solve(const std::vector<std::string> &input);
-    SolveDay1();
 
 private:
     static std::string preProcessLine(const std::string& line);
