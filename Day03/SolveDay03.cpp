@@ -3,45 +3,76 @@
 #include <string>
 #include <iostream>
 
-std::string symbols = "*/+&%#@=$-";
+std::string symbols = "0123456789";
+
+int collectNum(std::vector<std::string> input, int i, int j) {
+    std::string num;
+    int c = j;
+    while (input[i][c] >= '0' && input[i][c] <= '9') {
+        num.insert(0, 1, input[i][c]);
+        c--;
+    }
+    j++;
+    while (input[i][j] >= '0' && input[i][j] <= '9') {
+        num += input[i][j];
+        j++;
+    }
+    return std::stoi(num);
+}
+
+void setNumberInArray(int (&nums)[2], int num) {
+    if (nums[0] != num && nums[1] != num) //does not account for the scenario if there are 2x the same number but its no duplicate (eg 100 above and 100 below the gear)
+        if (nums[0] == 0) {
+            if (nums[0] != num) {
+                nums[0] = num;
+            }
+        } else if (nums[1] == 0) {
+            if (nums[1] != num) {
+                nums[1] = num;
+            }
+        }
+}
 
 void SolveDay03::solve(const std::vector<std::string> &input) {
     long total = 0;
-    std::vector<std::string> nums;
     for (int i = 0; i < input.size(); i++) {
-        std::string number;
         for (int j = 0; j < input[i].size(); j++) {
-            if (input[i][j] >= '0' && input[i][j] <= '9') {
-                number += input[i][j];
-                if (number.find('Y') == std::string::npos) {
-                    if (i != 0 && j != 0 && symbols.find(input[i - 1][j - 1]) != std::string::npos)                                   //top-left
-                        number.insert(0, 1, 'Y');
-                    if (i != 0 && symbols.find(input[i - 1][j]) != std::string::npos)                                                 //top-middle
-                        number.insert(0, 1, 'Y');
-                    if (i != 0 && j != input[i].length() - 1 && symbols.find(input[i - 1][j + 1]) != std::string::npos)               //top-right
-                        number.insert(0, 1, 'Y');
-                    if (j != 0 && symbols.find(input[i][j - 1]) != std::string::npos)                                                 //left
-                        number.insert(0, 1, 'Y');
-                    if (j != input[i].length() - 1 && symbols.find(input[i][j + 1]) != std::string::npos)                             //right
-                        number.insert(0, 1, 'Y');
-                    if (i != input.size() - 1 && j != 0 && symbols.find(input[i + 1][j - 1]) != std::string::npos)                     //bottom-left
-                        number.insert(0, 1, 'Y');
-                    if (i != input.size() - 1 && symbols.find(input[i + 1][j]) != std::string::npos)                                   //bottom-middle
-                        number.insert(0, 1, 'Y');
-                    if (i != input.size() - 1 && j != input[i].length() - 1 && symbols.find(input[i + 1][j + 1]) != std::string::npos)                                   //bottom-right
-                        number.insert(0, 1, 'Y');
+            if (input[i][j] == '*') {
+                int nums[2] = {0};
+                if (i != 0 && j != 0 && symbols.find(input[i - 1][j - 1]) != std::string::npos) {
+                    int num = collectNum(input, i - 1, j - 1);
+                    setNumberInArray(nums, num);
                 }
-            } else {
-                if (number.length() > 0) {
-                    if (number.find('Y') != std::string::npos) {
-                        total += std::stoi(number.substr(1, number.length() - 1));
-                    }
-                    number = "";
+                if (i != 0 && symbols.find(input[i - 1][j]) != std::string::npos) {
+                    int num = collectNum(input, i - 1, j);
+                    setNumberInArray(nums, num);
                 }
+                if (i != 0 && j != input[i].length() - 1 && symbols.find(input[i - 1][j + 1]) != std::string::npos) {
+                    int num = collectNum(input, i - 1, j + 1);
+                    setNumberInArray(nums, num);
+                }
+                if (j != 0 && symbols.find(input[i][j - 1]) != std::string::npos) {
+                    int num = collectNum(input, i, j - 1);
+                    setNumberInArray(nums, num);
+                }
+                if (j != input[i].length() - 1 && symbols.find(input[i][j + 1]) != std::string::npos) {
+                    int num = collectNum(input, i, j + 1);
+                    setNumberInArray(nums, num);
+                }
+                if (i != input.size() - 1 && j != 0 && symbols.find(input[i + 1][j - 1]) != std::string::npos) {
+                    int num = collectNum(input, i + 1, j - 1);
+                    setNumberInArray(nums, num);
+                }
+                if (i != input.size() - 1 && symbols.find(input[i + 1][j]) != std::string::npos) {
+                    int num = collectNum(input, i + 1, j);
+                    setNumberInArray(nums, num);
+                }
+                if (i != input.size() - 1 && j != input[i].length() - 1 && symbols.find(input[i + 1][j + 1]) != std::string::npos) {
+                    int num = collectNum(input, i + 1, j + 1);
+                    setNumberInArray(nums, num);
+                }
+                total += nums[0] * nums[1];
             }
-        }
-        if (number.find('Y') != std::string::npos) {
-            total += std::stoi(number.substr(1, number.length() - 1));
         }
     }
     std::cout << total << std::endl;
