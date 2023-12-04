@@ -2,5 +2,5 @@
 
 class SolveDay04 {
 public:
-    static void solve(const std::vector <std::string> &input);
+    static void solve(std::vector <std::string> input);
 };
