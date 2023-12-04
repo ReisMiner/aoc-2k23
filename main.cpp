@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include "Day01/SolveDay1.h"
 #include "InputReader.h"
 #include "Day02/SolveDay2.h"
@@ -13,6 +14,7 @@ int main(int argc, char *argv[]) {
     } else {
         selection = atoi(argv[1]);
     }
+    auto startTime = std::chrono::high_resolution_clock::now();
     switch (selection) {
         case 1:
             SolveDay1::solve(InputReader::readInput("../Day01/input"));
@@ -29,6 +31,8 @@ int main(int argc, char *argv[]) {
         default:
             std::cout << "exiting..." << std::endl;
     }
+    auto finishTime = std::chrono::high_resolution_clock::now();
+    std::cout<<"Finish Time: "<< std::chrono::duration_cast<std::chrono::milliseconds >(finishTime-startTime).count() << "ms\n";
 
     return 0;
 }
