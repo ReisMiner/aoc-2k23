@@ -1,1 +1,1 @@
-add_library(SolveUtils InputReader.cpp)
+add_library(SolveUtils InputReader.cpp UtilFunctions.cpp)

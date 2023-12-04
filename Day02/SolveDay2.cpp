@@ -3,26 +3,14 @@
 #include <iostream>
 #include <format>
 #include "SolveDay2.h"
+#include "UtilFunctions.h"
 
 #define RED_MAX 12
 #define GREEN_MAX 13
 #define BLUE_MAX 14
 #define PREFIX_LENGTH 5
 
-std::vector<std::string> split(std::string s, std::string delimiter) {
-    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
-    std::string token;
-    std::vector<std::string> res;
 
-    while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
-        token = s.substr(pos_start, pos_end - pos_start);
-        pos_start = pos_end + delim_len;
-        res.push_back(token);
-    }
-
-    res.push_back(s.substr(pos_start));
-    return res;
-}
 
 
 void SolveDay2::solve(const std::vector<std::string> &input) {
@@ -33,11 +21,11 @@ void SolveDay2::solve(const std::vector<std::string> &input) {
         std::string gameId = line.substr(PREFIX_LENGTH, colonPos - PREFIX_LENGTH);
         std::string picks = line.substr(colonPos + 2, line.length() - colonPos);
 
-        std::vector<std::string> res = split(picks, "; ");
+        std::vector<std::string> res = UtilFunctions::split(picks, "; ");
         for (std::string pick: res) {
-            std::vector<std::string> colors = split(pick, ", ");
+            std::vector<std::string> colors =  UtilFunctions::split(pick, ", ");
             for (std::string col: colors) {
-                std::vector<std::string> lastSplit = split(col, " ");
+                std::vector<std::string> lastSplit =  UtilFunctions::split(col, " ");
                 int num = std::stoi(lastSplit[0]);
                 if (lastSplit[1] == "red") {
                     if (num > minColors[0])
