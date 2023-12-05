@@ -5,6 +5,7 @@
 #include "Day02/SolveDay2.h"
 #include "Day03/SolveDay03.h"
 #include "Day04/SolveDay04.h"
+#include "Day05/SolveDay05.h"
 
 int main(int argc, char *argv[]) {
     int selection;
@@ -12,7 +13,7 @@ int main(int argc, char *argv[]) {
         std::cout << "select day to run:";
         std::cin >> selection;
     } else {
-        selection = atoi(argv[1]);
+        selection = std::stoi(argv[1]);
     }
     auto startTime = std::chrono::high_resolution_clock::now();
     switch (selection) {
@@ -27,6 +28,9 @@ int main(int argc, char *argv[]) {
             break;
         case 4:
             SolveDay04::solve(InputReader::readInput("../Day04/input"));
+            break;
+        case 5:
+            SolveDay05::solve(InputReader::readInput("../Day05/input"));
             break;
         default:
             std::cout << "exiting..." << std::endl;
