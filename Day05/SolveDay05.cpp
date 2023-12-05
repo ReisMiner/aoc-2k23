@@ -52,8 +52,11 @@ void SolveDay05::solve(std::vector<std::string> input) {
 
     std::vector<ulong> results;
 
-    for (ulong seed: seeds) {
-        results.push_back(resolve(seed, table));
+    for (int i = 0; i < seeds.size(); i += 2) {
+        std::cout << i << std::endl;
+        for (int j = 0; j < seeds[i + 1]; j++) {
+            results.push_back(resolve(seeds[i] + j, table));
+        }
     }
     std::cout << *std::ranges::min_element(results) << std::endl;
 }
