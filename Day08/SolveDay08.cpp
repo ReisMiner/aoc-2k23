@@ -1,19 +1,23 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <regex>
 #include "SolveDay08.h"
-#include "UtilFunctions.h"
-
-#define WIN_STRING "ZZZ"
-#define START_STRING "AAA"
+#include <numeric>
 
 std::vector<std::string> getBothValues(const std::string &input) {
     std::vector<std::string> split(2);
     split[0] = input.substr(7, 3);
     split[1] = input.substr(12, 3);
     return split;
+}
 
+unsigned long long lcmOfArray(std::vector<int> arr, int idx = 0) {
+    if (idx == arr.size() - 1) {
+        return arr[idx];
+    }
+    unsigned long long a = arr[idx];
+    unsigned long long b = lcmOfArray(arr, idx + 1);
+    return (a * b / std::gcd(a, b));
 }
 
 void SolveDay08::solve(std::vector<std::string> input) {
@@ -24,17 +28,25 @@ void SolveDay08::solve(std::vector<std::string> input) {
         else
             selectionOrder[i] = 1;
     }
-    std::string current = START_STRING;
-    int count = 0, cursor = 0;
-    while (current != WIN_STRING) {
-        for (int i = 2; i < input.size(); i++) {
-            if (input[i].substr(0, 3) == current) {
-                current = getBothValues(input[i])[selectionOrder[cursor]];
-                count++;
-                cursor = selectionOrder.size() == cursor + 1 ? 0 : cursor + 1;
-                break;
+    std::vector<std::string> currents;
+    for (int i = 2; i < input.size(); i++) {
+        if (input[i][2] == 'A')
+            currents.push_back(input[i].substr(0, 3));
+    }
+    int cursor = 0;
+    std::vector<int> counts(currents.size(), 0);
+    for (int c = 0; c < currents.size(); c++) {
+        while (currents[c][2] != 'Z') {
+            for (int i = 2; i < input.size(); i++) {
+                if (input[i].substr(0, 3) == currents[c]) {
+                    currents[c] = getBothValues(input[i])[selectionOrder[cursor]];
+                    counts[c]++;
+                    cursor = selectionOrder.size() == cursor + 1 ? 0 : cursor + 1;
+                    break;
+                }
             }
         }
     }
-    std::cout << count << std::endl;
+
+    std::cout << lcmOfArray(counts) << std::endl;
 }
