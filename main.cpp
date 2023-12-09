@@ -9,6 +9,7 @@
 #include "Day06/SolveDay06.h"
 #include "Day07/SolveDay07.h"
 #include "Day08/SolveDay08.h"
+#include "Day09/SolveDay09.h"
 
 int main(int argc, char *argv[]) {
     int selection;
@@ -43,6 +44,9 @@ int main(int argc, char *argv[]) {
             break;
         case 8:
             SolveDay08::solve(InputReader::readInput("../Day08/input"));
+            break;
+        case 9:
+            SolveDay09::solve(InputReader::readInput("../Day09/input"));
             break;
         default:
             std::cout << "exiting..." << std::endl;
